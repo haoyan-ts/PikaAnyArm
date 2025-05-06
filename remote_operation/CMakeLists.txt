@@ -210,5 +210,6 @@ include_directories(
 install(DIRECTORY
   scripts
   launch
+  config
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
