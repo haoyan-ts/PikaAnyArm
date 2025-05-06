@@ -1,0 +1,20 @@
+<launch>
+    
+    <arg name="IP" default="192.168.1.163"/>
+
+    <include file="$(find xarm_bringup)/launch/lite6_server.launch">
+        <arg name="robot_ip" value="$(arg IP)" />
+    </include>
+
+    <node pkg="sensor_tools" name="serial_gripper_imu" type="serial_gripper_imu" output="screen" respawn="true" />
+
+    <include file="$(find pika_locator)/launch/pika_single_locator.launch"/>
+
+    <node name="teleop_xarm" pkg="remote_operation" type="teleop_xarm.py" output="screen" >
+        <rosparam command="load" file="$(find remote_operation)/config/xarm_params.yaml" />
+        <!-- Parameters eff_position and pika_to_arm loaded from YAML -->
+    </node>
+    
+</launch>
+
+
