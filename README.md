@@ -31,16 +31,30 @@ catkin_make install -DCATKIN_WHITELIST_PACKAGES=""
 3、安装环境依赖
 
 ```bash
-conda create -n pika python=3.8
+conda create -n pika python=3.8.18
 
 conda activate pika
 
-conda install pinocchio -c conda-forge
+conda install pinocchio casadi -c conda-forge
 
-pip install meshcat casadi rospkg pyyaml
+pip install meshcat rospkg pyyaml
 ```
 
 我们仅在 Ubuntu 20.04 上测试了我们的代码，其他操作系统可能需要不同的配置。
+
+在运行程序时如遇到：
+
+```bash
+ImportError: /lib/x86_64-linux-gnu/libstdc++.so.6: version `GLIBCXX_3.4.29' not found (required by /home/agilex/miniconda3/envs/pika/lib/python3.8/site-packages/pinocchio/pinocchio_pywrap_default.cpython-38-x86_64-linux-gnu.so)
+```
+
+则在终端输入：
+
+```bash
+export LD_PRELOAD=/home/agilex/miniconda3/envs/pika/lib/libstdc++.so.6 
+```
+
+再次执行代码即可。
 
 ## 2. 开始
 
@@ -178,7 +192,7 @@ roslaunch remote_operation teleop_single_xarm.launch
 
 pika的坐标系是在夹爪中心上，通过 pika_pose 话题发布。
 
-pika_pose 话题的坐标系如上图所示：x轴超前、y轴朝左、z轴朝右。
+pika_pose 话题的坐标系如上图所示：x轴朝前、y轴朝左、z轴朝右。
 
 ### 4.2 话题信息
 
