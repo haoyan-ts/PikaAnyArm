@@ -63,6 +63,7 @@ export LD_PRELOAD=/home/agilex/miniconda3/envs/pika/lib/libstdc++.so.6
 > - 本仓库遥操的 Piper 机械臂的末端夹爪是默认夹爪，如下图所示。
 > - 遥操的Xarm机械臂型号是lite6，如需要适配到其他款的xarm或者其他厂商的机械臂需要根据情况修改机械臂的控制接口以及坐标系转换。
 > - 开启和关闭的操作是通过串口通信方式传输 trigger 信号，务必要连接线且不能跳过触发trigger这一阶段，否则机械臂会出现失控的情况。
+> - 使用piper遥操时需要对/PikaAnyArm/piper_ros/piper_description/urdf路径下的piper_description.urdf文件进行修改，将文件中所有的  `<mesh filename="/home/agilex/pika_ros/src/PikaAnyArm/piper_ros/piper_description/meshes/base_link.STL" />`替换成你本地的STL路径。
 
 ![piper_arm](docs_img/piper_arm.png)
 
