@@ -7,6 +7,7 @@
 	<node pkg="sensor_tools" name="serial_gripper_imu_l" type="serial_gripper_imu" output="screen" respawn="true">
 	    <param name="serial_port" value="$(arg l_serial_port)"/>
         <param name="joint_name" value="$(arg l_joint_name)"/>
+        <param name="ctrl_mode" value="teleop"/>
         <remap from="/imu/data" to="/imu_l/data"/>
         <remap from="/gripper/data" to="/gripper_l/data"/>
         <remap from="/gripper/ctrl" to="/gripper_l/ctrl"/>
@@ -19,6 +20,7 @@
 	<node pkg="sensor_tools" name="serial_gripper_imu_r" type="serial_gripper_imu" output="screen" respawn="true">
 	    <param name="serial_port" value="$(arg r_serial_port)"/>
         <param name="joint_name" value="$(arg r_joint_name)"/>
+        <param name="ctrl_mode" value="teleop"/>
         <remap from="/imu/data" to="/imu_r/data"/>
         <remap from="/gripper/data" to="/gripper_r/data"/>
         <remap from="/gripper/ctrl" to="/gripper_r/ctrl"/>

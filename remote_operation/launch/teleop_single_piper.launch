@@ -1,7 +1,10 @@
 <launch>
     <include file="$(find piper)/launch/start_single_piper.launch"/>
 
-	<node pkg="sensor_tools" name="serial_gripper_imu" type="serial_gripper_imu" output="screen" respawn="true" />
+	<node pkg="sensor_tools" name="serial_gripper_imu" type="serial_gripper_imu" output="screen" respawn="true" >
+        <param name="serial_port" value="/dev/ttyUSB0"/>
+        <param name="ctrl_mode" value="teleop"/>
+    </node>
 
     <include file="$(find pika_locator)/launch/pika_single_locator.launch"/>
 
