@@ -60,8 +60,8 @@ class RosOperator:
     def __init__(self):  
         rospy.init_node('piper_IK', anonymous=True)  #  /piper_FK/urdf_end_pose  /piper_IK/ctrl_end_pose
         self.index_name = rospy.get_param('~index_name', default="")
-        self.gripper_position = rospy.get_param('~gripper_xyzrpy', default='[0.19, 0.0, 0.2, 0.0, 0.0, 0.0]')
-        self.target_joint_state = rospy.get_param('~target_joint_state', default='[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]')
+        self.gripper_position = rospy.get_param('~gripper_xyzrpy', default=[0.19, 0.0, 0.2, 0.0, 0.0, 0.0])
+        self.target_joint_state = rospy.get_param('~target_joint_state', default=[0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
         
         self.arm_joint_state_publisher = None
         self.arm_end_pose_publisher = None

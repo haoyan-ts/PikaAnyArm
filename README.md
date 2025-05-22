@@ -31,13 +31,13 @@ catkin_make install -DCATKIN_WHITELIST_PACKAGES=""
 3、安装环境依赖
 
 ```bash
-conda create -n pika python=3.8.18
+conda create -n pika python=3.9.18
 
 conda activate pika
 
-conda install pinocchio casadi -c conda-forge
+conda install pinocchio==3.2.0 casadi==3.6.7 -c conda-forge
 
-pip install meshcat rospkg pyyaml
+pip3 install meshcat rospkg pyyaml piper-sdk opencv-python 
 ```
 
 我们仅在 Ubuntu 20.04 上测试了我们的代码，其他操作系统可能需要不同的配置。
