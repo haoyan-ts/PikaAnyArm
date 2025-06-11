@@ -6,218 +6,28 @@
   </p>
 </div>
 
-## 0. 介绍
+## 介绍
 
-该仓库实现了使用 pika sense 对 Piper 以及 Xarm lite6 机械臂进行遥操作。
+该仓库实现了使用 pika sense 对 Piper 以及 Xarm lite6 机械臂进行遥操作，需要将其放置到 pika_ros/src 路径下编译使用。
 
-## 1. 准备
+如果您在使用过程中遇到任何问题，或者有任何建议和反馈，请通过以下方式联系我们：
 
-1、克隆代码下本地并将其放置到 pika_ros/src 下
+- GitHub Issues: https://github.com/agilexrobotics/PikaAnyArm/issues
+- 电子邮件: [support@agilex.ai](mailto:support@agilex.ai)
 
-```bash
-cd ~/pika_ros/src
+我们的技术团队将尽快回复您的问题，并提供必要的支持和帮助。
 
-git clone https://github.com/agilexrobotics/PikaAnyArm.git
-```
+pika sdk：https://github.com/agilexrobotics/pika_sdk
 
-2、编译代码
+pika_ros：https://github.com/agilexrobotics/pika_ros
 
-```bash
-cd ~/pika_ros
+有关更多信息，您可以参考 [Pika 遥操作机械臂手册](https://agilexsupport.yuque.com/staff-hso6mo/peoot3/axi8hh9h9t2sh2su#380914a8) 和 [PIKA使用QA查询](https://agilexsupport.yuque.com/staff-hso6mo/peoot3/ltl2m8a3crra12kg)。
 
-catkin_make install -DCATKIN_WHITELIST_PACKAGES=""
-```
+## 支持的环境平台
 
-3、安装环境依赖
+### 软件环境
 
-```bash
-conda create -n pika python=3.9.18
-
-conda activate pika
-
-conda install pinocchio==3.2.0 casadi==3.6.7 -c conda-forge
-
-pip3 install meshcat rospkg pyyaml piper-sdk opencv-python 
-```
-
-我们仅在 Ubuntu 20.04 上测试了我们的代码，其他操作系统可能需要不同的配置。
-
-在运行程序时如遇到：
-
-```bash
-ImportError: /lib/x86_64-linux-gnu/libstdc++.so.6: version `GLIBCXX_3.4.29' not found (required by /home/agilex/miniconda3/envs/pika/lib/python3.8/site-packages/pinocchio/pinocchio_pywrap_default.cpython-38-x86_64-linux-gnu.so)
-```
-
-则在终端输入：
-
-```bash
-export LD_PRELOAD=/home/agilex/miniconda3/envs/pika/lib/libstdc++.so.6 
-```
-
-再次执行代码即可。
-
-## 2. 开始
-
-> 注意：
->
-> - 本仓库遥操的 Piper 机械臂的末端夹爪是默认夹爪，如下图所示。
-> - 遥操的Xarm机械臂型号是lite6，如需要适配到其他款的xarm或者其他厂商的机械臂需要根据情况修改机械臂的控制接口以及坐标系转换。
-> - 开启和关闭的操作是通过串口通信方式传输 trigger 信号，务必要连接线且不能跳过触发trigger这一阶段，否则机械臂会出现失控的情况。
-> - 使用piper遥操时需要对/PikaAnyArm/piper_ros/piper_description/urdf路径下的piper_description.urdf文件进行修改，将文件中所有的  `<mesh filename="/home/agilex/pika_ros/src/PikaAnyArm/piper_ros/piper_description/meshes/base_link.STL" />`替换成你本地的STL路径。
-
-![piper_arm](docs_img/piper_arm.png)
-
-### 2.1 单臂遥操Piper
-
-1、机械臂使能
-
-将机械臂的can线接入电脑
-
-然后执行：
-
-```bash
-cd ~/pika_ros/src/piper_ros
-
-bash can_activate.sh can0 1000000
-```
-
-2、对pika进行校准，详细步骤可参考 Pika 产品用户手册的 【2.1 基站部署】和【2.5 定位基站校准】
-
-3、将 Pika sense 接入电脑
-
-3、开启遥操单Piper程序
-
-```bash
-source ~/pika_ros/install/setup.bash
-
-roslaunch remote_operation teleop_single_piper.launch
-```
-
-4、开启程序后，Piper机械臂会去到设定的位姿，如想开启遥操作，则需要将夹爪快速往中心开合关闭两下触发trigger。关闭遥操同理。
-
-### 2.2 双臂遥操Piper
-
-1、机械臂使能
-
-先将左机械臂的can线接入电脑
-
-然后执行：
-
-```bash
-cd ~/pika_ros/src/piper_ros
-
-bash find_all_can_port.sh 
-```
-
-终端会出现左机械臂的端口号，接着将右机械臂的can线接入电脑
-
-再次执行：
-
-```bash
-bash find_all_can_port.sh 
-```
-
-终端会出现左机械臂的端口号。
-
-将这左右两个端口号复制到 can_config.sh 文件的 111 和 112 行，如下所示：
-
-```bash
-# 预定义的 USB 端口、目标接口名称及其比特率（在多个 CAN 模块时使用）
-if [ "$EXPECTED_CAN_COUNT" -ne 1 ]; then
-    declare -A USB_PORTS 
-    USB_PORTS["1-8.1:1.0"]="left_piper:1000000"  #左机械臂
-    USB_PORTS["1-8.2:1.0"]="right_piper:1000000" #右机械臂
-fi
-```
-
-保存完毕后，激活左右机械臂使能脚本：
-
-```bash
-cd ~/pika_ros/src/piper_ros
-
-bash can_config.sh 
-```
-
-2、对pika进行校准，详细步骤可参考 <<Pika 产品用户手册>> 的 【2.1 基站部署】、【2.5 定位基站校准】、【2.6 设置左右手摄像头】、【2.7 设置左右手定位器】，在【2.6 设置左右手摄像头】这步中主要设置的是左右夹持器端口号，左右鱼眼相机端口号不用设置。
-
-3、开启遥操双Piper程序
-
-```bash
-source ~/pika_ros/install/setup.bash
-
-roslaunch remote_operation teleop_double_piper.launch
-```
-
-4、开启程序后，Piper机械臂会去到设定的位姿，如想开启遥操作，则需要将夹爪快速往中心开合关闭两下触发trigger。关闭遥操同理。
-
-### 2.3 遥操单臂Xarm lite6
-
-配置xarm机械臂:
-
-1、将机械臂网口接入电脑后，对网口进行配置：
-
-我们使用的是 lite6 这款机械臂，它默认的 IP 为：192.168.1.163
-
-不同的机械臂可能配置会有所不同，下面是lite6的网口配置
-
-![3484779653](docs_img/3484779653.jpg)
-
-配置好后，打开 xarm 的 web 端：
-
-http://192.168.1.163:18333/?lang=cn&channel=prod
-
-2、在设置里面找到高级设置里面的辅助功能，确保姿态控制方式为 R/P/Y 方式。
-
-![3450890671](docs_img/3450890671.jpg)
-
-3、开启遥操单 Xarm 程序
-
-```bash
-roslaunch remote_operation teleop_single_xarm.launch
-```
-
-4、开启程序后，lite6机械臂会去到设定的位姿，如想开启遥操作，则需要将夹爪快速往中心开合关闭两下触发trigger。关闭遥操同理。
-
-## 3. 配置文件说明
-
-在 config 文件夹中：
-
-1、piper_params.yaml 中的：
-
-- gripper_xyzrpy 指的是夹爪相对于机器人joint6的偏移量，单位是米和弧度。
-- target_joint_state 指的是机械臂初始位姿的6个关节角度，单位为弧度。
-
-2、xarm_params.yaml 中的：
-
-- eff_position 指的是机械臂的执行器初始位置和方向，单位是毫米和弧度。
-- pika_to_arm 指的是从pika夹爪中心坐标系到机械臂末端执行器坐标系的转换，单位是米和弧度。
-
-
-
-## 4. 遥操你的机械臂
-
-为了方便用户使用 pika sense 遥操自己的机械臂，我们在此说明：
-
-- pika 夹爪末端坐标系
-- pika_pose 话题信息
-
-### 4.1 pika坐标系图
-
-![image-20250506145108632](docs_img/mmexport1746516732555.png)
-
-pika的坐标系是在夹爪中心上，通过 pika_pose 话题发布。
-
-pika_pose 话题的坐标系如上图所示：x轴朝前、y轴朝左、z轴朝右。
-
-### 4.2 话题信息
-
-单个 pika sense 遥操下发控制机械臂的话题名为：/pika_pose，左右手 pika sense遥操下发话题分别对应：/pika_pose_l、/pika_pose_r。
-
-/pika_pose 话题的数据类型为 geometry_msgs::PoseStamped，市场主流机械臂一般都会开放机械臂末端控制接口，其消息类型也是 geometry_msgs::PoseStamped
-
-代码可以参考：teleop_xarm.py
-
-
-
-
+- 架构：x86_64
+- 操作系统：Ubuntu20.04
+- ROS：noetic
 
