@@ -7,8 +7,8 @@
       <param name="can_port" value="left_piper" />
       <param name="mode" value="$(arg mode)" />
       <param name="auto_enable" value="$(arg auto_enable)" />
-      <remap from="/puppet/joint_states" to="/puppet/joint_l" />
-      <remap from="/master/joint_states" to="/joint_states_l" />
+      <remap from="/puppet/joint_states" to="/joint_states_single_l" />
+      <remap from="/master/joint_states" to="/joint_states_gripper_l" />
     </node>
 
   <!-- 启动右侧机械臂节点 -->
@@ -16,8 +16,8 @@
       <param name="can_port" value="right_piper" />
       <param name="mode" value="$(arg mode)" />
       <param name="auto_enable" value="$(arg auto_enable)" />
-      <remap from="/puppet/joint_states" to="/puppet/joint_r" />
-      <remap from="/master/joint_states" to="joint_states_r" />
+      <remap from="/puppet/joint_states" to="/joint_states_single_r" />
+      <remap from="/master/joint_states" to="joint_states_gripper_r" />
     </node>
 </launch>
 
