@@ -31,3 +31,13 @@ pika_ros：https://github.com/agilexrobotics/pika_ros
 - 操作系统：Ubuntu20.04
 - ROS：noetic
 
+## CHANGELOG
+### 2025.06.17
+#### Features
+None
+
+#### Bug Fixes
+- 修复了需要从绝对路径加载URDF的问题
+
+#### Other Changes
+None
