@@ -117,7 +117,11 @@ class RosOperator:
             joint_position.append(sol_q[5])
             
             #夹爪值
-            joint_position.append((self.gripper_value-0.05) * 0.04)
+            # joint_position.append((self.gripper_value-0.05) * 0.04)
+
+            # Since the Sense gripper's distance range is from 0.0 to 0.025, remove the offset
+            joint_position.append(self.gripper_value * 0.04)
+
             
             joint_state_msg = JointState()
             joint_state_msg.header = Header()
