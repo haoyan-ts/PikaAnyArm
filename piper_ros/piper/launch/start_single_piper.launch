@@ -10,7 +10,7 @@
     <param name="gripper_val_mutiple" value="$(arg gripper_val_mutiple)" />
     <!-- <param name="rviz_ctrl_flag" value="true" /> -->
     <param name="girpper_exist" value="true" />
-    <remap from="joint_ctrl_single" to="/joint_states_gripper" />
+    <remap from="joint_ctrl_single" to="/joint_states" />
     <remap from="joint_states_single" to="/joint_states_single" />
   </node>
 </launch>
