@@ -8,7 +8,7 @@
 
     <include file="$(find pika_locator)/launch/pika_single_locator.launch"/>
 
-     <node name="piper_IK" pkg="remote_operation" type="piper_ik.py" output="screen" >
+     <node name="piper_IK" pkg="remote_operation" type="piper_ik_old.py" output="screen" >
         <rosparam command="load" file="$(find remote_operation)/config/piper_params.yaml" />
         <!-- Parameters gripper_xyzrpy and target_joint_state loaded from YAML -->
     </node>
